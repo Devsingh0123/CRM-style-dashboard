@@ -2,7 +2,7 @@ CRM Lead Managemennt Dashboard
 A full-stack CRM application for managing leads with authentication, analytics, and advanced filtering capabilities.
 
 🚀 Live Demo
-Deployed Application URL
+Deployed Application URL: https://crm-style-dashboard.vercel.app/
 
 📋 Features
 User Authentication - Secure login/signup with JWT
@@ -55,25 +55,25 @@ Backend: Render
 📁 Project Structure
 ```
 crm-project/
-├── backend/
-│   ├── config/
-│   │   └── db.js
-│   ├── controllers/
-│   │   ├── auth.controller.js
-│   │   └── lead.controller.js
-│   ├── controllers/
-│   │   └── auth.middleware.js
-│   │
-│   ├── models/
-│   │   ├── Lead.model.js
-│   │   └── User.model.js
-│   ├── routes/
-│   │   ├── auth.routes.js
-│   │   └── lead.routes.js
-│   ├── scripts/
-│   │   └── seedLeads.js
-│   ├── .env
-│   └── index.js
+backend/
+   ├── config/
+   │   └── db.js
+   ├── controllers/
+   │   ├── auth.controller.js
+   │   └── lead.controller.js
+   ├── controllers/
+   │   └── auth.middleware.js
+   │
+   ├── models/
+   │   ├── Lead.model.js
+   │   └── User.model.js
+   ├── routes/
+   │   ├── auth.routes.js
+   │   └── lead.routes.js
+   ├── scripts/
+   │   └── seedLeads.js
+   ├── .env
+   └── index.js
 
 
 
@@ -227,9 +227,9 @@ npm run dev      # Start development server
 npm run build    # Create production build
 npm run preview  # Preview production build
 
-Your Name - @yourtwitter - email@example.com
+ Email-iamdevsingh123@gmail.com
 
-Project Link: https://github.com/yourusername/crm-project
+Project Link: (https://crm-style-dashboard.vercel.app/)
 
-Made with ❤️ for the fresher hiring assignment
+
 
