@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 const authMiddleware = async (req, res, next) => {
   try {
-    // Token को cookie से लें
+    // Token 
     const token = req.cookies.token;
 
     if (!token) {
@@ -15,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // req में user ID add करें
+    // req 
     req.userId = decoded.userId;
     
     next();
