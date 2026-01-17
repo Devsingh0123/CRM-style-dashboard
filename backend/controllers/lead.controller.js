@@ -3,7 +3,7 @@ import Lead from '../models/Lead.model.js';
 // ✅ GET ALL LEADS (with pagination, search, filter)
 export const getAllLeads = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search = '', status, source } = req.query;
+    const { page = 1, limit = 10, search = '', status } = req.query;
     
     const query = {};
     
@@ -12,7 +12,7 @@ export const getAllLeads = async (req, res) => {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
         { email: { $regex: search, $options: 'i' } },
-        { company: { $regex: search, $options: 'i' } }
+       
       ];
     }
     
@@ -21,10 +21,7 @@ export const getAllLeads = async (req, res) => {
       query.status = status;
     }
     
-    // Filter by source
-    if (source) {
-      query.source = source;
-    }
+  
     
     const skip = (page - 1) * limit;
     
@@ -76,47 +73,14 @@ export const getAnalytics = async (req, res) => {
       }
     ]);
     
-    // Leads by source
-    const leadsBySource = await Lead.aggregate([
-      {
-        $group: {
-          _id: '$source',
-          count: { $sum: 1 }
-        }
-      }
-    ]);
-    
-    // Monthly leads (last 6 months)
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-    
-    const monthlyLeads = await Lead.aggregate([
-      {
-        $match: {
-          createdAt: { $gte: sixMonthsAgo }
-        }
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: '$createdAt' },
-            month: { $month: '$createdAt' }
-          },
-          count: { $sum: 1 }
-        }
-      },
-      {
-        $sort: { '_id.year': 1, '_id.month': 1 }
-      }
-    ]);
-    
+ 
     res.status(200).json({
       success: true,
       data: {
         totalLeads,
         leadsByStatus,
-        leadsBySource,
-        monthlyLeads
+        
+        
       }
     });
     
@@ -125,7 +89,6 @@ export const getAnalytics = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to fetch analytics',
-      error: error.message
     });
   }
 };
