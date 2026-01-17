@@ -231,4 +231,8 @@ npm run preview  # Preview production build
 
 Project Link: (https://crm-style-dashboard.vercel.app/)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 37076c4309f558097a2addc41e9db0f3dfa30d60
 
