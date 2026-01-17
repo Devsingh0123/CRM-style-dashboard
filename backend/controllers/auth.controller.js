@@ -1,6 +1,6 @@
-import User from '../models/User.model.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import User from "../models/User.model.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // ✅ SIGNUP CONTROLLER
 export const signup = async (req, res) => {
@@ -9,9 +9,9 @@ export const signup = async (req, res) => {
 
     // Validation
     if (!name || !email || !password) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'All fields are required' 
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
       });
     }
 
@@ -20,7 +20,7 @@ export const signup = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: 'User already exists'
+        message: "User already exists",
       });
     }
 
@@ -31,28 +31,26 @@ export const signup = async (req, res) => {
     const newUser = new User({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     await newUser.save();
 
-
     res.status(201).json({
       success: true,
-      message: 'User registered successfully',
+      message: "User registered successfully",
       user: newUser,
     });
-
   } catch (error) {
-    console.error('Signup error:', error);
+    console.error("Signup error:", error);
     res.status(500).json({
-       message: 'error in user registeration',
+      message: "error in user registeration",
       success: false,
     });
   }
 };
 
-// ✅ LOGIN CONTROLLER 
+// ✅ LOGIN CONTROLLER
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -60,7 +58,7 @@ export const login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Email and password are required'
+        message: "Email and password are required",
       });
     }
 
@@ -69,7 +67,7 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: "Invalid credentials",
       });
     }
 
@@ -77,11 +75,11 @@ export const login = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     // console.log(isPasswordValid);
-    
+
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: "Invalid credentials",
       });
     }
 
@@ -89,26 +87,26 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: "7d" },
     );
 
     // Set cookie
-    res.cookie('token', token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-
-   
 
     res.status(200).json({
       success: true,
-      message: 'Login successful',
+      message: "Login successful",
       user,
     });
-
   } catch (error) {
-    console.error('Login error:', error);
+    console.error("Login error:", error);
     res.status(500).json({
-      message: 'error in user login',
+      message: "error in user login",
       success: false,
     });
   }
@@ -116,10 +114,10 @@ export const login = async (req, res) => {
 
 // ✅ LOGOUT CONTROLLER
 export const logout = (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie("token");
   res.status(200).json({
     success: true,
-    message: 'Logged out successfully'
+    message: "Logged out successfully",
   });
 };
 
@@ -127,24 +125,24 @@ export const logout = (req, res) => {
 export const getCurrentUser = async (req, res) => {
   try {
     // req.userId middleware se aayega
-    const user = await User.findById(req.userId).select('-password');
-    
+    const user = await User.findById(req.userId).select("-password");
+
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'User not found'
+        message: "User not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      user
+      user,
     });
   } catch (error) {
-    console.error('Get current user error:', error);
+    console.error("Get current user error:", error);
     res.status(500).json({
       success: false,
-      message: 'Internal server error'
+      message: "Internal server error",
     });
   }
 };
